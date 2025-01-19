@@ -1,0 +1,1 @@
+export const apiBaseUrl = 'https://api.openweathermap.org'
