@@ -62,7 +62,7 @@ export function AppSearchPage() {
         </form>
       </Form>
       {!error && weather && (
-        <CityWeatherCard city={{ id: weather.id, lat: weather.coord.lat, lon: weather.coord.lon, name: weather.name }} weather={weather} />
+        <CityWeatherCard weather={weather} />
       )}
     </>
   )

@@ -2,7 +2,14 @@ import { useParams } from 'react-router'
 import { CityWeatherCard } from '../custom/app-city-weather-card'
 import { useQuery } from '@tanstack/react-query';
 import { getWeatherByCity, getWeatherForecastByCity } from '@/api/open-weather';
-import { WeatherForecastCard } from '../custom/app-weather-forecast-card';
+import { CartesianGrid, XAxis, BarChart, Bar, YAxis } from "recharts"
+
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart"
 
 export const WeatherDetailPage = () => {
   const { name } = useParams()
@@ -24,6 +31,19 @@ export const WeatherDetailPage = () => {
   // show only the forecast for next days at 12 o'clock (to reduce the list)
   const filteredWeatherForecast = weatherForecast?.list.filter(forecast => forecast?.dt_txt?.endsWith("12:00:00"));
 
+  const chartData = filteredWeatherForecast?.map(forecast => {
+    return {
+      day: forecast.dt_txt.split(' ')[0],
+      temp: Math.ceil(forecast.main.temp),
+    }
+  })
+
+  const chartConfig = {
+    temp: {
+      label: "Temperatur",
+    },
+  } satisfies ChartConfig
+
   if (!weatherForecast) return null
   if (weatherForecastError) return (<span>Error...</span>)
   if (weatherForecastIsPending) return (<span>Loading...</span>)
@@ -31,13 +51,17 @@ export const WeatherDetailPage = () => {
   return (
     <>
       {error && <span>Error...</span>}
-      {weather && <CityWeatherCard city={{ id: weather.id, lat: weather.coord.lat, lon: weather.coord.lon, name: weather.name }} weather={weather} />}
+      {weather && <CityWeatherCard weather={weather} isLink={false} />}
       <h2 className='text-xl text-accent font-bold my-4'>Vorschau auf die nächsten Tage:</h2>
-      <div className='grid gird-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4'>
-        {filteredWeatherForecast?.map(forecast => (
-          <WeatherForecastCard key={forecast.dt} date={forecast.dt_txt?.split(' ')[0] || ''} weather={forecast} />
-        ))}
-      </div>
+      <ChartContainer config={chartConfig} className="w-1/3 -ml-10">
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid vertical={true} />
+          <XAxis dataKey="day" />
+          <YAxis />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <Bar dataKey="temp" fill="#b5ce34" barSize={30} />
+        </BarChart>
+      </ChartContainer>
     </>
   )
 }

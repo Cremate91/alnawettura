@@ -29,7 +29,7 @@ export const StartPage = () => {
 
         return (
           <li key={data.name}>
-            <CityWeatherCard city={defaultCities[index]} weather={data} />
+            <CityWeatherCard weather={data} />
           </li>
         )
       })}
