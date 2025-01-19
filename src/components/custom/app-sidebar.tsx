@@ -54,7 +54,7 @@ export function AppSidebar() {
                     <SidebarMenuSub>
                       {favoriteCities.map((city) => (
                         <SidebarMenuSubItem key={city.name} className="flex justify-between items-center">
-                          <NavLink to={`/weather-detail/${city.id}`}>
+                          <NavLink to={`/weather-detail/${city.name}`}>
                             {city.name}
                           </NavLink>
                           <Button variant={"link"} onClick={() => removeFavorite(city)}> <Trash className="h-4" /></Button>

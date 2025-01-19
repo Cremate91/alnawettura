@@ -1,20 +1,20 @@
-import { City } from '../types/types';
+import { AWCity } from '../types/types';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware'
 
 type FavoriteCitiesStore = {
-  favoriteCities: City[];
-  addFavorite: (favoriteCity: City) => void;
-  removeFavorite: (favoriteCity: City) => void;
+  favoriteCities: AWCity[];
+  addFavorite: (favoriteCity: AWCity) => void;
+  removeFavorite: (favoriteCity: AWCity) => void;
 };
 
 export const useFavoriteCitiesStore = create<FavoriteCitiesStore>()(
   devtools(
     persist(
       (set) => ({
-        favoriteCities: [] as City[],
-        addFavorite: (favoriteCity: City) => set((state) => ({ favoriteCities: [...state.favoriteCities, favoriteCity] })),
-        removeFavorite: (favoriteCity: City) => set((state) => ({ favoriteCities: state.favoriteCities.filter((f) => f !== favoriteCity) })),
+        favoriteCities: [] as AWCity[],
+        addFavorite: (favoriteCity: AWCity) => set((state) => ({ favoriteCities: [...state.favoriteCities, favoriteCity] })),
+        removeFavorite: (favoriteCity: AWCity) => set((state) => ({ favoriteCities: state.favoriteCities.filter((f) => f !== favoriteCity) })),
       }),
       { name: 'AW-local-weather' },
     ),

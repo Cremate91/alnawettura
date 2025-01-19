@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useQuery } from '@tanstack/react-query';
-import { getGeoByCityName, getWeatherByCity } from '@/api/open-weather';
-import { City } from '@/types/types';
+import { getWeatherByCity } from '@/api/open-weather';
 import { formSchema } from '@/schema/form';
 import { CityWeatherCard } from '../custom/app-city-weather-card';
 
@@ -27,46 +26,20 @@ export function AppSearchPage() {
     },
   })
 
-  const inputCity = form.getValues().city
+  const inputCity = form.watch('city')
 
-  const { error: geoLocationError, data: geoLocations, refetch } = useQuery({
-    queryKey: ['city', inputCity],
-    queryFn: async () => getGeoByCityName(inputCity),
+  const { error, data: weather, refetch } = useQuery({
+    queryKey: ['weather', inputCity],
+    queryFn: async () => await getWeatherByCity(inputCity),
     enabled: false,
-    staleTime: 60 * 1000,
-    refetchOnWindowFocus: false
-  })
-
-  const city = geoLocations ? {
-    id: Math.ceil(Math.random() * 1000),
-    lat: geoLocations[0].lat,
-    lon: geoLocations[0].lon,
-    name: geoLocations[0]?.local_names?.['de'] || geoLocations[0].name
-  } as City : undefined;
-
-  const { error, data: weatherData } = useQuery({
-    queryKey: ['weather', geoLocations],
-    queryFn: async () => {
-      if (!city) return undefined
-      const weather = await getWeatherByCity(city)
-      return weather ? weather : undefined
-    },
-    enabled: !!geoLocations,
+    retry: false,
     refetchOnWindowFocus: false,
   })
-
-  if (geoLocationError) {
-    return <div>some errors</div>
-  }
-
-  if (geoLocations?.length === 0) {
-    return <div>missing Data</div>
-  }
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(() => refetch())} className="space-y-8">
+        <form onSubmit={form.handleSubmit(() => refetch())} className="max-w-[500px]">
           <FormField
             control={form.control}
             name="city"
@@ -83,14 +56,14 @@ export function AppSearchPage() {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button className='my-4' type="submit">Suchen</Button>
 
           {error && <p>Error: {error.message}</p>}
-          {weatherData && city && (
-            <CityWeatherCard city={city} weather={weatherData} />
-          )}
         </form>
       </Form>
+      {!error && weather && (
+        <CityWeatherCard city={{ id: weather.id, lat: weather.coord.lat, lon: weather.coord.lon, name: weather.name }} weather={weather} />
+      )}
     </>
   )
 }

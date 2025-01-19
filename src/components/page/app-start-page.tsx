@@ -9,7 +9,7 @@ export const StartPage = () => {
     queries: defaultCities.map(city => {
       return {
         queryKey: ['city', city.id],
-        queryFn: async () => getWeatherByCity(city),
+        queryFn: async () => getWeatherByCity(city.name),
       }
     })
   })
