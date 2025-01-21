@@ -5,6 +5,7 @@
 - [Tailwind](https://tailwindcss.com/) (CSS framework)
 - [Shadcn](https://ui.shadcn.com/) (Component-Library)
 - [Zod](https://zod.dev/) (validation)
+- [Tanstack/Query](https://tanstack.com/query/latest/docs/framework/react/overview) (fetch/query-helper)
 - [ReactRouter](https://reactrouter.com/home) (routing)
 - [OpenWeatherMap](https://openweathermap.org/) - Weather Api
 
