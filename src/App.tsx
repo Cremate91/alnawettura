@@ -22,7 +22,7 @@ function App() {
               <SidebarTrigger variant={'default'} className='bg-transparent text-primary hover:bg-primary hover:text-white' />
               <h1 className="text-primary font-bold text-center ml-2">Das Wetter in Deutschland</h1>
             </div>
-            <img src={alnaturaBg} className='object-cover absolute top-0 left-0 opacity-20 w-full h-full pointer-events-none' />
+            <img src={alnaturaBg} className='z-[-1] object-cover absolute top-0 left-0 opacity-20 w-full h-full pointer-events-none' />
             <div className="px-4">
               <Routes>
                 <Route path='/' element={<StartPage />} />

@@ -6,8 +6,8 @@ export const WeatherItem = ({ weather }: { weather: AWWeather | OWAForecast }) =
   const speed = weather.wind.speed;
 
   return (
-    <div className="flex flex-col gap-4 mr-8">
-      <div className="flex gap-4">
+    <div className="flex flex-col gap-4 ">
+      <div className="flex gap-4 bg-gray-200 dark:bg-lime-300 dark:text-black p-2 justify-between rounded-md shadow-xl">
         <span className="text-xl">{description}</span>
         <img
           src={`https://openweathermap.org/img/wn/${icon}@2x.png`}
